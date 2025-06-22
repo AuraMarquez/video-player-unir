@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" src="./styles.css" />
+    <title>Video Player</title>
+  </head>
+
+  <body>
+    <main>
+      <video class="video-display" width="768" height="432">
+        <source src="./LostInYesterday_TameImpala.mp4" type="video/mp4" />
+      </video>
+      <div class="video-controls">
+        <input type="range" class="progress-bar" min="0" oninput="shiftVideo()"/>
+
+        <button type="button" title="Play / Pause" class="play-btn" onclick="play()">PLAY</button>
+        <button type="button" title="Mute" class="mute-btn" onclick="mute()">MUTE</button>
+
+        <button type="button" title="Decrease volume" class="less-vol-btn" onclick="changeVolume('decrease')">LESS</button>
+        <button type="button" title="Increase volume" class="more-vol-btn" onclick="changeVolume('increase')">MORE</button>
+
+        <span class="speed-lbl">x1</span>
+        <button type="button" title="Slower" onclick="changeSpeed('slower')">SLOWER</button>
+        <button type="button" title="Speed x1" class="" onclick="changeSpeed('default')">x1</button>
+        <button type="button" title="Faster" onclick="changeSpeed('faster')">FASTER</button>
+
+        <button type="button" title="Size down player" onclick="changeSize('down')">SIZE DOWN</button>
+        <button type="button" title="Size up player" onclick="changeSize('up')">SIZE UP</button>
+      </div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
