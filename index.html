@@ -32,7 +32,14 @@
         <button type="button" title="Size up player" onclick="changeSize('up')">SIZE UP</button>
 
         <button type="button" title="Subtitles" onclick="toogleSubtitles()">SUBTITLES</button>
+
+        <button type="button" title="Video capture" onclick="takePicture()">VIDEO CAPTURE</button>
+
+        <a download="example.jpg" href="" onclick="downloadCanvas(this);">Download example.jpg</a>
       </div>
+
+      <canvas class="photo-canvas"></canvas>
+      <img id="photo" alt="The screen capture will appear in this box." />
 
       <div>
         <button onclick="playVideo('i-dont-love-you')">

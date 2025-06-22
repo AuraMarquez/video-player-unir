@@ -3,6 +3,10 @@ let playButton = document.querySelector(".play-btn");
 let muteButton = document.querySelector(".mute-btn");
 let speedLabel = document.querySelector(".speed-lbl");
 let progressBar = document.querySelector(".progress-bar");
+
+let canvas = document.querySelector(".photo-canvas");
+let photo = document.querySelector("#photo");
+
 let video = null;
 
 const videos = [
@@ -101,6 +105,13 @@ function playVideo(newVideoId) {
   createVideoPlayer();
 
   video.play();
+  playButton.textContent = "PAUSE";
+
+  // let subtitules = document.querySelector(".subtitles");
+  // let track = subtitules.track;
+  // console.log(track.mode);
+
+  // console.log(track.mode);
 }
 
 function play() {
@@ -118,17 +129,17 @@ function shiftVideo() {
 }
 
 function changeVideo(operation) {
-  let videoIndex = videos.findIndex(item => item.id === videoId);
+  let videoIndex = videos.findIndex((item) => item.id === videoId);
 
   if (operation === "previous" && videoIndex > 0) {
     videoIndex -= 1;
-  } else if (operation === "next" && videoIndex < videos.length -1) {
+  } else if (operation === "next" && videoIndex < videos.length - 1) {
     videoIndex += 1;
   } else {
     return;
   }
 
-  playVideo(videos[videoIndex].id)
+  playVideo(videos[videoIndex].id);
 }
 
 function mute() {
@@ -186,3 +197,24 @@ function toogleSubtitles() {
     track.mode = "hidden";
   }
 }
+
+function takePicture() {
+  const context = canvas.getContext("2d");
+
+  // if (width && height) {
+  canvas.width = video.width;
+  canvas.height = video.height;
+  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  // window.open(canvas.toDataURL("image/png"));
+
+  // const data = canvas.toDataURL("image/png");
+  // photo.setAttribute("src", data);
+  // } else {
+  //   clearPhoto();
+  // }
+}
+
+async function downloadCanvas(el) {
+  const imageURI = canvas.toDataURL("image/jpg");
+  el.href = imageURI;
+};
