@@ -7,16 +7,18 @@
     <title>Video Player</title>
   </head>
 
-  <body>
+  <body onload="createVideoPlayer()">
     <main>
-      <video class="video-display" width="768" height="432">
-        <source src="./videos/LostInYesterday_TameImpala.mp4" type="video/mp4" />
-      </video>
+      <div class="video-container"></div>
+
       <div class="video-controls">
         <input type="range" class="progress-bar" min="0" oninput="shiftVideo()"/>
 
         <button type="button" title="Play / Pause" class="play-btn" onclick="play()">PLAY</button>
         <button type="button" title="Mute" class="mute-btn" onclick="mute()">MUTE</button>
+
+        <button type="button" title="Previous video" onclick="changeVideo('previous')">PREVIOUS</button>
+        <button type="button" title="Next video" onclick="changeVideo('next')">NEXT</button>
 
         <button type="button" title="Decrease volume" class="less-vol-btn" onclick="changeVolume('decrease')">LESS</button>
         <button type="button" title="Increase volume" class="more-vol-btn" onclick="changeVolume('increase')">MORE</button>
@@ -28,6 +30,35 @@
 
         <button type="button" title="Size down player" onclick="changeSize('down')">SIZE DOWN</button>
         <button type="button" title="Size up player" onclick="changeSize('up')">SIZE UP</button>
+
+        <button type="button" title="Subtitles" onclick="toogleSubtitles()">SUBTITLES</button>
+      </div>
+
+      <div>
+        <button onclick="playVideo('i-dont-love-you')">
+          <span>I Don't Love You</span>
+          <span>My Chemical Romance</span>
+        </button>
+        
+        <button onclick="playVideo('taste')">
+          <span>Taste</span>
+          <span>Sabrina Carpenter</span>
+        </button>
+
+        <button onclick="playVideo('tear-you-apart')">
+          <span>Tear You Apart</span>
+          <span>She Wants Revenge</span>
+        </button>
+
+        <button onclick="playVideo('the-less-i-know')">
+          <span>The Less I Know The Better</span>
+          <span>Tame Impala</span>
+        </button>
+
+        <button onclick="playVideo('you-know-im')">
+          <span>You Know I'm No Good</span>
+          <span>Amy Winehouse</span>
+        </button>
       </div>
     </main>
 
