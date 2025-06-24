@@ -189,6 +189,7 @@ main {
 footer {
   position: absolute;
   bottom: 10px;
+  right: 10px;
   color: white;
   font-weight: 300;
 }
