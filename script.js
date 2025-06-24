@@ -264,9 +264,9 @@ function takePicture() {
   pauseVideo();
 
   const context = canvas.getContext("2d");
-  canvas.width = video.width;
-  canvas.height = video.height;
-  context.drawImage(video, 0, 0, canvas.width, canvas.height);
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  context.drawImage(video, 0, 0);
 
   modal.style.visibility = "visible";
 }
