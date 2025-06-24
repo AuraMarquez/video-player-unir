@@ -161,7 +161,7 @@ function changeVideo(operation) {
     return;
   }
 
-  playVideo(videos[videoIndex].id);
+  playNewVideo(videos[videoIndex].id);
 }
 
 function mute() {
