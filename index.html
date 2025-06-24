@@ -1,73 +1,212 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" src="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./tip-tap-font.css" />
+    <link rel="stylesheet" href="./styles.css" />
     <title>Video Player</title>
   </head>
 
   <body onload="createVideoPlayer()">
     <main>
-      <div class="video-container"></div>
+      <div class="video-player">
+        <div class="video-container"></div>
 
-      <div class="video-controls">
-        <input type="range" class="progress-bar" min="0" oninput="shiftVideo()"/>
+        <div class="video-controls">
+          <div>
+            <input
+              type="range"
+              class="progress-bar"
+              min="0"
+              oninput="shiftVideo()"
+            />
+          </div>
 
-        <button type="button" title="Play / Pause" class="play-btn" onclick="play()">PLAY</button>
-        <button type="button" title="Mute" class="mute-btn" onclick="mute()">MUTE</button>
+          <div class="video-buttons">
+            <button
+              type="button"
+              title="Play / Pause"
+              class="control-btn play-btn"
+              onclick="play()"
+            >
+              <span class="icon icon-play"></span>
+            </button>
 
-        <button type="button" title="Previous video" onclick="changeVideo('previous')">PREVIOUS</button>
-        <button type="button" title="Next video" onclick="changeVideo('next')">NEXT</button>
+            <button
+              type="button"
+              title="Previous video"
+              class="control-btn"
+              onclick="changeVideo('previous')"
+            >
+              <span class="icon icon-previous"></span>
+            </button>
+            <button
+              type="button"
+              title="Next video"
+              class="control-btn"
+              onclick="changeVideo('next')"
+            >
+              <span class="icon icon-next"></span>
+            </button>
 
-        <button type="button" title="Decrease volume" class="less-vol-btn" onclick="changeVolume('decrease')">LESS</button>
-        <button type="button" title="Increase volume" class="more-vol-btn" onclick="changeVolume('increase')">MORE</button>
+            <span>|</span>
 
-        <span class="speed-lbl">x1</span>
-        <button type="button" title="Slower" onclick="changeSpeed('slower')">SLOWER</button>
-        <button type="button" title="Speed x1" class="" onclick="changeSpeed('default')">x1</button>
-        <button type="button" title="Faster" onclick="changeSpeed('faster')">FASTER</button>
+            <span class="volume-lbl"></span>
 
-        <button type="button" title="Size down player" onclick="changeSize('down')">SIZE DOWN</button>
-        <button type="button" title="Size up player" onclick="changeSize('up')">SIZE UP</button>
+            <button
+              type="button"
+              title="Mute"
+              class="control-btn mute-btn"
+              onclick="mute()"
+            >
+              <span class="icon icon-dont-mute"></span>
+            </button>
 
-        <button type="button" title="Subtitles" onclick="toogleSubtitles()">SUBTITLES</button>
+            <button
+              type="button"
+              title="Decrease volume"
+              class="control-btn less-vol-btn"
+              onclick="changeVolume('decrease')"
+            >
+              <span class="icon icon-volume-down"></span>
+            </button>
+            <button
+              type="button"
+              title="Increase volume"
+              class="control-btn more-vol-btn"
+              onclick="changeVolume('increase')"
+            >
+              <span class="icon icon-volume-up"></span>
+            </button>
 
-        <button type="button" title="Video capture" onclick="takePicture()">VIDEO CAPTURE</button>
+            <span>|</span>
 
-        <a download="example.jpg" href="" onclick="downloadCanvas(this);">Download example.jpg</a>
+            <span class="speed-lbl">x1</span>
+            <button
+              type="button"
+              title="Slower"
+              class="control-btn"
+              onclick="changeSpeed('slower')"
+            >
+              <span class="icon icon-slower"></span>
+            </button>
+            <button
+              type="button"
+              title="Speed x1"
+              class="control-btn default-speed-btn"
+              onclick="changeSpeed('default')"
+            >
+              x1
+            </button>
+            <button
+              type="button"
+              title="Faster"
+              class="control-btn"
+              onclick="changeSpeed('faster')"
+            >
+              <span class="icon icon-faster"></span>
+            </button>
+
+            <span>|</span>
+
+            <button
+              type="button"
+              title="Size down player"
+              class="control-btn"
+              onclick="changeSize('down')"
+            >
+              <span class="icon icon-size-down"></span>
+            </button>
+            <button
+              type="button"
+              title="Size up player"
+              class="control-btn"
+              onclick="changeSize('up')"
+            >
+              <span class="icon icon-size-up"></span>
+            </button>
+
+            <span>|</span>
+
+            <button
+              type="button"
+              title="Subtitles"
+              class="control-btn subtitles-btn"
+              onclick="toogleSubtitles()"
+            >
+              <span class="icon icon-subtitles"></span>
+            </button>
+
+            <span>|</span>
+
+            <button
+              type="button"
+              title="Video capture"
+              class="control-btn"
+              onclick="takePicture()"
+            >
+              <span class="icon icon-camera"></span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <canvas class="photo-canvas"></canvas>
-      <img id="photo" alt="The screen capture will appear in this box." />
-
-      <div>
-        <button onclick="playVideo('i-dont-love-you')">
+      <div class="video-playlist">
+        <button onclick="playNewVideo('i-dont-love-you')" class="song-button">
           <span>I Don't Love You</span>
           <span>My Chemical Romance</span>
         </button>
-        
-        <button onclick="playVideo('taste')">
+
+        <button onclick="playNewVideo('taste')" class="song-button">
           <span>Taste</span>
           <span>Sabrina Carpenter</span>
         </button>
 
-        <button onclick="playVideo('tear-you-apart')">
+        <button onclick="playNewVideo('tear-you-apart')" class="song-button">
           <span>Tear You Apart</span>
           <span>She Wants Revenge</span>
         </button>
 
-        <button onclick="playVideo('the-less-i-know')">
+        <button onclick="playNewVideo('the-less-i-know')" class="song-button">
           <span>The Less I Know The Better</span>
           <span>Tame Impala</span>
         </button>
 
-        <button onclick="playVideo('you-know-im')">
+        <button onclick="playNewVideo('you-know-im')" class="song-button">
           <span>You Know I'm No Good</span>
           <span>Amy Winehouse</span>
         </button>
       </div>
     </main>
+
+    <div class="capture-modal">
+      <div class="modal-content">
+        <canvas class="photo-canvas"></canvas>
+
+        <div class="modal-btns">
+          <a
+            download=""
+            onclick="downloadCanvas(this);"
+            class="download-capture-link"
+          >
+            Download video capture
+          </a>
+
+          <button onclick="closeModal()" class="close-modal-btn">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span>Created with <span class="icon-heart"></span> by Aura Jessid Márquez Malpica</span>
+    </footer>
 
     <script src="./script.js"></script>
   </body>

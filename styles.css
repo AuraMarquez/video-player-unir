@@ -1,9 +1,194 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  text-decoration: none !important;
+  user-select: none !important;
+}
+
 body {
   width: 100vw;
   height: 100vh;
+  background-color: #30243d;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: start;
+  position: relative;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  column-gap: 3rem;
+  margin-top: 1rem;
+}
+
+.video-player {
+  position: relative;
+}
+
+.video-container {
+  width: 1054px;
+  height: 606px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: rgba(255, 255, 255, 0.3) 0px 7px 29px 0px;
   background-color: black;
 }
 
-/* .video-display {
-  aspect-ratio: 16/9;
-} */
+.video-playlist {
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  box-shadow: rgba(255, 255, 255, 0.3) 0px 7px 29px 0px;
+  padding: 10px;
+  row-gap: 20px;
+  background-color: black;
+}
+
+.video-controls {
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  padding: 10px;
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: -60px;
+}
+
+.video-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
+}
+
+.progress-bar {
+  width: 100%;
+}
+
+.song-button {
+  flex: 1;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 5px;
+  padding: 10px;
+  color: #fff;
+  border: 0;
+  font-size: 16px;
+  transition: all 150ms ease-in-out;
+  box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+  border-radius: 10px;
+  background-color: #111111;
+  background-image: radial-gradient(76% 151% at 52% -52%, rgba(255, 255, 255, 0.23) 0%, transparent 100%);
+  cursor: pointer;
+}
+
+.song-button:hover {
+  filter: brightness(1.1);
+}
+
+.song-button:active {
+  transform: scale(.95);
+}
+
+.song-button>span:first-of-type {
+  font-weight: 600;
+}
+
+.song-button>span:last-of-type {
+  font-weight: 300;
+  font-size: small;
+}
+
+.control-btn {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: white 1px solid;
+  background-color: transparent;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+.control-btn:disabled {
+  border: gray 1px solid;
+  color: gray;
+}
+
+.default-speed-btn {
+  font-size: small;
+}
+
+.capture-modal {
+  visibility: hidden;
+  position: absolute;
+  inset: 0;
+  background-color: rgba(50, 50, 50, 0.7);
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-btns {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px;
+  background-color: white;
+}
+
+.download-capture-link,
+.close-modal-btn {
+  border: none;
+  font-family: inherit;
+  font-size: smaller;
+  display: inline-block;
+  padding: 5px 10px;
+  color: white;
+  cursor: pointer;
+  border-radius: calc(infinity * 1px);
+}
+
+.download-capture-link {
+  background-color: #008080;
+}
+
+.download-capture-link:hover {
+  background-color: #469594;
+}
+
+.close-modal-btn {
+  background-color: #132c2c;
+}
+
+.close-modal-btn:hover {
+  background-color: #15403f;
+}
+
+.icon-heart {
+  color: #c70039;
+}
+
+footer {
+  position: absolute;
+  bottom: 10px;
+  color: white;
+  font-weight: 300;
+}

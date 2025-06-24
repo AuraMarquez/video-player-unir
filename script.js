@@ -1,14 +1,9 @@
-let videoContainer = document.querySelector(".video-container");
-let playButton = document.querySelector(".play-btn");
-let muteButton = document.querySelector(".mute-btn");
-let speedLabel = document.querySelector(".speed-lbl");
-let progressBar = document.querySelector(".progress-bar");
-
-let canvas = document.querySelector(".photo-canvas");
-let photo = document.querySelector("#photo");
-
-let video = null;
-
+const videoSizes = [
+  { width: 256, height: 144 },
+  { width: 512, height: 288 },
+  { width: 768, height: 432 },
+  { width: 1024, height: 576 },
+];
 const videos = [
   {
     id: "i-dont-love-you",
@@ -23,7 +18,7 @@ const videos = [
   {
     id: "tear-you-apart",
     file: "TearYouApart_SheWantsRevenge.mp4",
-    subtitle: "TearYouApart_SheWantsRevenge.vtt",
+    subtitle: "",
   },
   {
     id: "the-less-i-know",
@@ -37,33 +32,39 @@ const videos = [
   },
 ];
 
-const videoSizes = [
-  { width: 256, height: 144 },
-  { width: 512, height: 288 },
-  { width: 768, height: 432 },
-  { width: 1024, height: 576 },
-  // { width: 1280, height: 720 },
-];
+// VIDEO PLAYER CONFIGURATION
 let sizeIndex = 2;
 let videoId = "the-less-i-know";
-let showSubtitles = false;
+let speed = 1;
+let volume = 0.5;
+let trackMode = "disabled";
+let muted = false;
+// ----------
 
-// window.addEventListener("load", (event) => {
-//   let trackElem = document.querySelector("track");
-//   let track = trackElem.track;
+let videoContainer = document.querySelector(".video-container");
 
-//   track.mode = "showing";
+let progressBar = document.querySelector(".progress-bar");
+let playButtonIcon = document.querySelector(".play-btn .icon");
+let muteButtonIcon = document.querySelector(".mute-btn .icon");
+let volumeLabel = document.querySelector(".volume-lbl");
+let speedLabel = document.querySelector(".speed-lbl");
+let subtitlesButton = document.querySelector(".subtitles-btn");
+let subtitlesButtonIcon = document.querySelector(".subtitles-btn .icon");
 
-//   for (const cue of track.cues) {
-//     cue.pauseOnExit = true;
-//   }
-// });
+let modal = document.querySelector(".capture-modal");
+let canvas = document.querySelector(".photo-canvas");
+
+let video = null;
 
 function createVideoPlayer() {
   video = document.createElement("video");
   video.className = "video-display";
   video.width = videoSizes[sizeIndex].width;
   video.height = videoSizes[sizeIndex].height;
+  video.disablePictureInPicture = true;
+  video.playbackRate = speed;
+  video.volume = volume;
+  video.muted = muted;
 
   video.addEventListener("loadedmetadata", function () {
     progressBar.value = 0;
@@ -72,7 +73,8 @@ function createVideoPlayer() {
 
   video.addEventListener("ended", function () {
     video.currentTime = 0;
-    playButton.textContent = "PLAY";
+    playButtonIcon.classList.remove("icon-pause");
+    playButtonIcon.classList.add("icon-play");
   });
 
   video.addEventListener("timeupdate", function () {
@@ -86,42 +88,62 @@ function createVideoPlayer() {
   source.type = "video/mp4";
   video.appendChild(source);
 
+  const track = document.createElement("track");
+
   if (newVideo.subtitle) {
-    const track = document.createElement("track");
     track.src = `./videos/${newVideo.subtitle}`;
     track.srclang = "en";
     track.classList = "subtitles";
-    video.appendChild(track);
+
+    subtitlesButton.removeAttribute("disabled");
+    if (trackMode === "showing") {
+      enableSubtitles(track.track);
+    } else if (trackMode === "hidden") {
+      hideSubtitles(track.track);
+    }
+  } else {
+    disableSubtitles(track.track);
   }
 
+  video.appendChild(track);
+
   videoContainer.append(video);
+
+  video.muted ? showMuteIcon() : showUnmuteIcon();
+  volumeLabel.textContent = `Volume: ${video.volume.toFixed(2)}`;
+  speedLabel.textContent = `Speed: x${video.playbackRate}`;
 }
 
-function playVideo(newVideoId) {
-  video.pause();
+function playNewVideo(newVideoId) {
+  pauseVideo();
 
   videoId = newVideoId;
   videoContainer.innerHTML = "";
   createVideoPlayer();
 
-  video.play();
-  playButton.textContent = "PAUSE";
-
-  // let subtitules = document.querySelector(".subtitles");
-  // let track = subtitules.track;
-  // console.log(track.mode);
-
-  // console.log(track.mode);
+  playVideo();
 }
 
 function play() {
   if (video.paused) {
-    video.play();
-    playButton.textContent = "PAUSE";
+    playVideo();
   } else {
-    video.pause();
-    playButton.textContent = "PLAY";
+    pauseVideo();
   }
+}
+
+function playVideo() {
+  playButtonIcon.classList.remove("icon-play");
+  playButtonIcon.classList.add("icon-pause");
+
+  video.play();
+}
+
+function pauseVideo() {
+  playButtonIcon.classList.remove("icon-pause");
+  playButtonIcon.classList.add("icon-play");
+
+  video.pause();
 }
 
 function shiftVideo() {
@@ -146,10 +168,22 @@ function mute() {
   video.muted = !video.muted;
 
   if (video.muted) {
-    muteButton.textContent = "UNMUTE";
+    showMuteIcon();
   } else {
-    muteButton.textContent = "MUTE";
+    showUnmuteIcon();
   }
+
+  muted = video.muted;
+}
+
+function showUnmuteIcon() {
+  muteButtonIcon.classList.remove("icon-mute");
+  muteButtonIcon.classList.add("icon-dont-mute");
+}
+
+function showMuteIcon() {
+  muteButtonIcon.classList.remove("icon-dont-mute");
+  muteButtonIcon.classList.add("icon-mute");
 }
 
 function changeVolume(operation) {
@@ -160,6 +194,9 @@ function changeVolume(operation) {
   } else if (operation === "increase" && currentVolume < 1) {
     video.volume += 0.1;
   }
+
+  volume = video.volume;
+  volumeLabel.textContent = `Volume: ${video.volume.toFixed(2)}`;
 }
 
 function changeSpeed(operation) {
@@ -171,7 +208,8 @@ function changeSpeed(operation) {
     video.playbackRate = 1;
   }
 
-  speedLabel.textContent = `x${video.playbackRate}`;
+  speed = video.playbackRate;
+  speedLabel.textContent = `Speed: x${video.playbackRate}`;
 }
 
 function changeSize(operation) {
@@ -189,32 +227,56 @@ function toogleSubtitles() {
   let subtitules = document.querySelector(".subtitles");
   let track = subtitules.track;
 
-  showSubtitles = !showSubtitles;
-
-  if (showSubtitles) {
-    track.mode = "showing";
-  } else {
-    track.mode = "hidden";
+  if (track.mode === "disabled" || track.mode === "hidden") {
+    enableSubtitles(track);
+  } else if (track.mode === "showing") {
+    hideSubtitles(track);
   }
+
+  trackMode = track.mode;
+}
+
+function enableSubtitles(track) {
+  track.mode = "showing";
+
+  subtitlesButtonIcon.classList.remove("icon-subtitles");
+  subtitlesButtonIcon.classList.add("icon-no-subtitles");
+}
+
+function hideSubtitles(track) {
+  track.mode = "hidden";
+  subtitlesIconShow();
+}
+
+function disableSubtitles(track) {
+  track.mode = "disabled";
+  subtitlesIconShow();
+  subtitlesButton.setAttribute("disabled", "true");
+  trackMode = track.mode;
+}
+
+function subtitlesIconShow() {
+  subtitlesButtonIcon.classList.remove("icon-no-subtitles");
+  subtitlesButtonIcon.classList.add("icon-subtitles");
 }
 
 function takePicture() {
-  const context = canvas.getContext("2d");
+  pauseVideo();
 
-  // if (width && height) {
+  const context = canvas.getContext("2d");
   canvas.width = video.width;
   canvas.height = video.height;
   context.drawImage(video, 0, 0, canvas.width, canvas.height);
-  // window.open(canvas.toDataURL("image/png"));
 
-  // const data = canvas.toDataURL("image/png");
-  // photo.setAttribute("src", data);
-  // } else {
-  //   clearPhoto();
-  // }
+  modal.style.visibility = "visible";
 }
 
 async function downloadCanvas(el) {
-  const imageURI = canvas.toDataURL("image/jpg");
+  const imageURI = canvas.toDataURL("image/png");
+  el.download = `${Date.now()}`;
   el.href = imageURI;
-};
+}
+
+function closeModal() {
+  modal.style.visibility = "hidden";
+}
